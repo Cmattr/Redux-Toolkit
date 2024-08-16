@@ -1,36 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = { 
-    exercises: {},
-    totalItems: 0,
-};
-
-export const exerciseSlice = createSlice({
-    name: 'exercises',
-    initialState,
-    reducers: {
-        addExercise: (state, action) => {
-            const { id } = action.payload;
-            if (state.exercises[id]) {
-                state.exercises[id] += 1;
-            } else {
-                state.exercises[id] = 1;
-            }
-            state.totalItems += 1;
-        },
-        removeExercise: (state, action) => {
-            const { id } = action.payload;
-            if (state.exercises[id]) {
-                state.exercises[id] -= 1;
-                if (state.exercises[id] === 0) {
-                    delete state.exercises[id];
-                }
-                state.totalItems -= 1;
-            }
-        },
+const exercisesSlice = createSlice({
+  name: 'exercises',
+  initialState: {
+    exercises: {}
+  },
+  reducers: {
+    addExercise: (state, action) => {
+      const { id, name, count } = action.payload;
+      state.exercises[id] = { name, count }; 
     },
+    addCount: (state, action) => {
+      const { id, count } = action.payload;
+      if (state.exercises[id]) {
+        state.exercises[id].count += count; 
+      }
+    },
+  }
 });
 
-export const { addExercise, removeExercise } = exerciseSlice.actions;
-
-export default exerciseSlice.reducer;
+export const { addExercise, addCount } = exercisesSlice.actions;
+export default exercisesSlice.reducer;
